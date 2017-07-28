@@ -4,6 +4,7 @@ A simple password hash generator
 """
 import crypt
 import getpass
+import hashlib
 
 #### Functions ####
 def getPasswd():
@@ -62,7 +63,8 @@ userPass = getPasswd()
 encTypeChoice = chooseEnc()
 
 if encTypeChoice == "MD5":
-    userHash = crypt.crypt(userPass, crypt.METHOD_MD5)
+    # Need to encode before calling hexdigest...
+    userHash = hashlib.md5(userPass.encode('utf-8')).hexdigest()
 elif encTypeChoice == "SHA512":
     userHash = crypt.crypt(userPass, crypt.METHOD_SHA512)
 
