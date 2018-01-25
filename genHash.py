@@ -54,21 +54,27 @@ If you want to generate a password hash for GNU/Linux,
 (/etc/shadow) choose SHA512.
 
 Your hash will be printed to stdout on completion.
+
+You can exit at any time by pressing CTRL+C
 --------------------------------------------------
 """
 
 print(welcome)
 
-userPass = getPasswd()
-encTypeChoice = chooseEnc()
+try:
+    userPass = getPasswd()
+    encTypeChoice = chooseEnc()
 
-if encTypeChoice == "MD5":
-    # Need to encode before calling hexdigest...
-    userHash = hashlib.md5(userPass.encode('utf-8')).hexdigest()
-elif encTypeChoice == "SHA512":
-    userHash = crypt.crypt(userPass, crypt.METHOD_SHA512)
+    if encTypeChoice == "MD5":
+        # Need to encode before calling hexdigest...
+        userHash = hashlib.md5(userPass.encode('utf-8')).hexdigest()
+    elif encTypeChoice == "SHA512":
+        userHash = crypt.crypt(userPass, crypt.METHOD_SHA512)
 
-print("Your hash is:")
-print(userHash)
+    print("Your hash is:")
+    print(userHash)
+except KeyboardInterrupt:
+    print("\nGot CTRL+C. Exiting.")
+    exit(0)
 
 exit(0)
